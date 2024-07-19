@@ -6,7 +6,6 @@ import dev.kord.core.behavior.edit
 import dev.kord.core.behavior.interaction.modal
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.behavior.interaction.response.respond
-import dev.kord.core.behavior.interaction.updateEphemeralMessage
 import dev.kord.core.entity.interaction.ButtonInteraction
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
