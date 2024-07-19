@@ -1,0 +1,7 @@
+{
+  "token": "secret",
+  "registerCommands": false,
+  "unregisterCommands": false,
+  "returnAfterRegister": false,
+  "returnAfterUnregister": false
+}
