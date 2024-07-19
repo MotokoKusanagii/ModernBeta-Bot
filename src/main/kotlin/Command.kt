@@ -9,7 +9,7 @@ interface Command {
     val description: String
     val builder: GlobalChatInputCreateBuilder.() -> Unit
 
-    suspend fun callGuild(interaction: GuildChatInputCommandInteraction)
+    suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction)
 
     suspend fun register() {
         kord.createGlobalChatInputCommand(name = name, description = description, builder = builder)

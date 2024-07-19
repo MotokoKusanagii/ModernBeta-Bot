@@ -131,7 +131,7 @@ suspend fun main() {
 
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
         if (interaction.type == InteractionType.ApplicationCommand) {
-            commands[interaction.invokedCommandName]?.callGuild(interaction)
+            commands[interaction.invokedCommandName]?.onCallGuild(interaction)
         }
     }
 

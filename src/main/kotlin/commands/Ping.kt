@@ -9,7 +9,7 @@ import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
 class Ping(override val kord: Kord, override val name: String, override val description: String,
            override val builder: GlobalChatInputCreateBuilder.() -> Unit
 ) : Command {
-    override suspend fun callGuild(interaction: GuildChatInputCommandInteraction) {
+    override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         interaction.respondPublic {
             content = "Pong!"
         }

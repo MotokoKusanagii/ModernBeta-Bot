@@ -14,7 +14,7 @@ import dev.kord.rest.builder.message.embed
 
 class Register(override val kord: Kord, override val name: String, override val description: String,
                override val builder: GlobalChatInputCreateBuilder.() -> Unit) :  Command {
-    override suspend fun callGuild(interaction: GuildChatInputCommandInteraction) {
+    override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         val response = interaction.deferEphemeralResponse()
 
         val parent = 1263077357619777638 // This has to be later retrieved from the settings table
@@ -47,7 +47,7 @@ class Register(override val kord: Kord, override val name: String, override val 
             )
         }
 
-        channel.createMessage{
+        val message = channel.createMessage{
             embed {
                 title = "$submissionTitle submission editor"
                 color = dev.kord.common.Color(0x18ebeb)
@@ -68,12 +68,11 @@ class Register(override val kord: Kord, override val name: String, override val 
                     label = "Abort"
                 }
             }
-
-            val message = response.respond {
-                content = "Created ${channel.mention} successfully!"
-            }
-
-            message.deleteDelay(3000)
         }
+
+        val confirmation = response.respond {
+            content = "Created ${channel.mention} successfully!"
+        }
+        confirmation.deleteDelay(3000)
     }
 }
