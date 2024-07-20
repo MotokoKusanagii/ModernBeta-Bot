@@ -23,7 +23,7 @@ class ButtonEditDescription(
         // It does not use Modal::builder because I have to replace value
         interaction.modal(modal.title, modal.customId) {
             actionRow {
-                textInput(TextInputStyle.Paragraph, "BuildCompetition-modal-input", "Description") {
+                textInput(TextInputStyle.Paragraph, "BuildCompetition-description-modal-input", "Description") {
                     allowedLength = 3..3000
                     placeholder = "Enter description of your build here!"
                     value = interaction.message.embeds[1].description

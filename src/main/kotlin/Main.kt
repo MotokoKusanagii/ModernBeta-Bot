@@ -1,11 +1,8 @@
-import buildCompetition.ButtonAbort
-import buildCompetition.ButtonEditDescription
-import buildCompetition.ModalEditDescription
+import buildCompetition.*
 import commands.Ping
 import commands.Register
 import dev.kord.common.entity.*
 import dev.kord.core.Kord
-import dev.kord.core.behavior.interaction.response.EphemeralMessageInteractionResponseBehavior
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kord.core.event.interaction.ButtonInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
@@ -13,9 +10,7 @@ import dev.kord.core.event.interaction.ModalSubmitInteractionCreateEvent
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -28,13 +23,6 @@ data class ConfigJson(
     val returnAfterRegister: Boolean,
     val returnAfterUnregister: Boolean,
 )
-
-fun EphemeralMessageInteractionResponseBehavior.deleteDelay(millis: Long) {
-    this.kord.launch {
-        delay(millis)
-        this@deleteDelay.delete()
-    }
-}
 
 suspend fun unregisterAll(kord: Kord) {
     val commands = kord.getGlobalApplicationCommands()
@@ -63,11 +51,13 @@ suspend fun main() {
     val ctx = Context()
     ctx.distributor.addButton(ButtonAbort(kord, ctx))
     ctx.distributor.addButton(ButtonEditDescription(kord, ctx))
+    ctx.distributor.addButton(ButtonCoordinates(kord, ctx))
 
     ctx.distributor.addCommand(Ping(kord, ctx))
     ctx.distributor.addCommand(Register(kord, ctx))
 
     ctx.distributor.addModal(ModalEditDescription(kord, ctx))
+    ctx.distributor.addModal(ModalCoordinates(kord, ctx))
 
     // Delete global commands
     if (config.unregisterCommands) {

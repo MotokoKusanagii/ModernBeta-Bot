@@ -62,22 +62,29 @@ class Register(
 
         val abort = ctx.distributor.buttons["BuildCompetition-abort"]!!
         val edit = ctx.distributor.buttons["BuildCompetition-edit-description"]!!
+        val coords = ctx.distributor.buttons["BuildCompetition-coords"]!!
 
         val message = channel.createMessage{
             embed {
                 title = "$submissionTitle submission editor"
                 color = dev.kord.common.Color(0x18ebeb)
                 description = "**Things you can do here before submitting**\n" +
-                              "- Create a description"
+                              "- Create a description\n" +
+                              "- TODO: Do some magic to make files work (sorry future Meiko)"
             }
             embed {
                 title = submissionTitle
                 color = dev.kord.common.Color(0x18ebeb)
                 description = "Create your description here"
+                field {
+                    name = "Coordinates"
+                    value = "Not provided!"
+                }
             }
 
             actionRow {
                 interactionButton(edit.style, edit.customId, edit.builder)
+                interactionButton(coords.style, coords.customId, coords.builder)
                 interactionButton(abort.style, abort.customId, abort.builder)
             }
         }

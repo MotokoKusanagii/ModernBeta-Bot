@@ -6,6 +6,7 @@ import deleteDelay
 import dev.kord.core.Kord
 import dev.kord.core.behavior.edit
 import dev.kord.core.behavior.interaction.respondEphemeral
+import dev.kord.core.behavior.interaction.updatePublicMessage
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
 import dev.kord.rest.builder.interaction.ModalBuilder
 import dev.kord.rest.builder.message.embed
@@ -18,7 +19,7 @@ class ModalEditDescription(
     override val builder: ModalBuilder.() -> Unit = {}
 ) : Modal {
     override suspend fun onSubmit(interaction: ModalSubmitInteraction) {
-        interaction.message?.edit {
+        interaction.updatePublicMessage {
             embed {
                 title = interaction.message!!.embeds[0].title
                 color = interaction.message!!.embeds[0].color
@@ -27,13 +28,12 @@ class ModalEditDescription(
             embed {
                 title = interaction.message!!.embeds[1].title
                 color = interaction.message!!.embeds[1].color
-                description = interaction.textInputs["BuildCompetition-modal-input"]?.value
+                description = interaction.textInputs["BuildCompetition-description-modal-input"]?.value
+                field {
+                    name = interaction.message!!.embeds[1].fields[0].name
+                    value = interaction.message!!.embeds[1].fields[0].value
+                }
             }
         }
-
-        val msg = interaction.respondEphemeral {
-            content = "Edited description successfully!"
-        }
-        msg.deleteDelay(3000)
     }
 }
