@@ -1,5 +1,4 @@
 import dev.kord.common.entity.ButtonStyle
-import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.core.Kord
 import dev.kord.core.entity.interaction.ButtonInteraction
 import dev.kord.rest.builder.component.ButtonBuilder
