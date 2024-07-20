@@ -1,6 +1,7 @@
 package commands
 
 import Command
+import Context
 import deleteDelay
 import dev.kord.common.entity.*
 import dev.kord.core.Kord
@@ -9,11 +10,22 @@ import dev.kord.core.behavior.createTextChannel
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
+import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
 
-class Register(override val kord: Kord, override val name: String, override val description: String,
-               override val builder: GlobalChatInputCreateBuilder.() -> Unit) :  Command {
+class Register(
+    override val kord: Kord,
+    override val ctx: Context,
+    override val name: String = "register",
+    override val description: String = "Register a build for the competition!",
+    override val builder: GlobalChatInputCreateBuilder.() -> Unit = {
+        string("title", "The title of your submission!") {
+            required = true
+            maxLength = 50
+        }
+    }
+) :  Command {
     override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         val response = interaction.deferEphemeralResponse()
 
@@ -47,6 +59,10 @@ class Register(override val kord: Kord, override val name: String, override val 
             )
         }
 
+
+        val abort = ctx.distributor.buttons["BuildCompetition-abort"]!!
+        val edit = ctx.distributor.buttons["BuildCompetition-edit-description"]!!
+
         val message = channel.createMessage{
             embed {
                 title = "$submissionTitle submission editor"
@@ -61,12 +77,8 @@ class Register(override val kord: Kord, override val name: String, override val 
             }
 
             actionRow {
-                interactionButton(ButtonStyle.Primary, "button/register/edit description") {
-                    label = "Edit Description"
-                }
-                interactionButton(ButtonStyle.Danger, "button/register/abort") {
-                    label = "Abort"
-                }
+                interactionButton(edit.style, edit.customId, edit.builder)
+                interactionButton(abort.style, abort.customId, abort.builder)
             }
         }
 

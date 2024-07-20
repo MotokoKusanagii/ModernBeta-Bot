@@ -6,22 +6,10 @@ import dev.kord.rest.builder.component.ButtonBuilder
 
 interface Button {
     val kord: Kord
-    val label: String?
-    val emoji: DiscordPartialEmoji?
+    val ctx: Context
     val customId: String
     var style: ButtonStyle
-    var disabled: Boolean
+    var builder: ButtonBuilder.InteractionButtonBuilder.() -> Unit
 
     suspend fun onPress(interaction: ButtonInteraction)
-
-    suspend fun get(): ButtonBuilder.InteractionButtonBuilder.() -> Unit {
-        return {
-            label = this@Button.label
-            emoji = this@Button.emoji
-            customId = this@Button.customId
-            style = this@Button.style
-            disabled = this@Button.disabled
-        }
-    }
-
 }
