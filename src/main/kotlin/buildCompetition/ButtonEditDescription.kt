@@ -13,7 +13,7 @@ class ButtonEditDescription(
     override val kord: Kord,
     override val ctx: Context,
     override val customId: String = "BuildCompetition-edit-description",
-    override var style: ButtonStyle = ButtonStyle.Primary,
+    override var style: ButtonStyle = ButtonStyle.Secondary,
     override var builder: ButtonBuilder.InteractionButtonBuilder.() -> Unit = {
         label = "Edit Description"
     }

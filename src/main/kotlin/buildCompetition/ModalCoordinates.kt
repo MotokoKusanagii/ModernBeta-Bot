@@ -52,7 +52,7 @@ class ModalCoordinates(
                 description = interaction.message!!.embeds[1].description
                 field {
                     name = interaction.message!!.embeds[1].fields[0].name
-                    value = "%,d %,d %,d".format(Locale.GERMANY, x, y, z)
+                    value = "X: **%,d** Y: **%,d** Z: **%,d**".format(Locale.GERMANY, x, y, z)
                 }
             }
         }

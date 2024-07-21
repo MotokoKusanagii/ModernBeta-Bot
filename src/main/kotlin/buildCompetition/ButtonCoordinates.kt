@@ -13,7 +13,7 @@ class ButtonCoordinates(
     override val kord: Kord,
     override val ctx: Context,
     override val customId: String = "BuildCompetition-coords",
-    override var style: ButtonStyle = ButtonStyle.Primary,
+    override var style: ButtonStyle = ButtonStyle.Secondary,
     override var builder: ButtonBuilder.InteractionButtonBuilder.() -> Unit = {
         label = "Provide Coordinates"
     }
