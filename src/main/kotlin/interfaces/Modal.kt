@@ -1,3 +1,6 @@
+package interfaces
+
+import Context
 import dev.kord.core.Kord
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
 import dev.kord.rest.builder.interaction.ModalBuilder

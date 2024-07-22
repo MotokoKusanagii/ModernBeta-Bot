@@ -1,11 +1,8 @@
 package buildCompetition
 
 import Context
-import Modal
-import deleteDelay
+import interfaces.Modal
 import dev.kord.core.Kord
-import dev.kord.core.behavior.edit
-import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.behavior.interaction.updatePublicMessage
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
 import dev.kord.rest.builder.interaction.ModalBuilder
@@ -32,6 +29,10 @@ class ModalEditDescription(
                 field {
                     name = interaction.message!!.embeds[1].fields[0].name
                     value = interaction.message!!.embeds[1].fields[0].value
+                }
+                field {
+                    name = interaction.message!!.embeds[1].fields[1].name
+                    value = interaction.message!!.embeds[1].fields[1].value
                 }
             }
         }

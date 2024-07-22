@@ -1,6 +1,6 @@
 package buildCompetition
 
-import Button
+import interfaces.Button
 import Context
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.TextInputStyle
@@ -20,7 +20,7 @@ class ButtonEditDescription(
 ) : Button {
     override suspend fun onPress(interaction: ButtonInteraction) {
         val modal = ctx.distributor.modals["BuildCompetition-description-modal"]!!
-        // It does not use Modal::builder because I have to replace value
+        // It does not use interfaces.Modal::builder because I have to replace value
         interaction.modal(modal.title, modal.customId) {
             actionRow {
                 textInput(TextInputStyle.Paragraph, "BuildCompetition-description-modal-input", "Description") {

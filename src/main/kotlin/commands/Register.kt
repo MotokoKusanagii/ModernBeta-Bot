@@ -1,6 +1,6 @@
 package commands
 
-import Command
+import interfaces.Command
 import Context
 import deleteDelay
 import dev.kord.common.entity.*
@@ -25,7 +25,7 @@ class Register(
             maxLength = 50
         }
     }
-) :  Command {
+) : Command {
     override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         val response = interaction.deferEphemeralResponse()
 
@@ -63,14 +63,18 @@ class Register(
         val abort = ctx.distributor.buttons["BuildCompetition-abort"]!!
         val edit = ctx.distributor.buttons["BuildCompetition-edit-description"]!!
         val coords = ctx.distributor.buttons["BuildCompetition-coords"]!!
+        val authors = ctx.distributor.guildUserMenus["BuildCompetition-author-select"]!!
 
-        val message = channel.createMessage{
+        channel.createMessage{
             embed {
                 title = "$submissionTitle submission editor"
                 color = dev.kord.common.Color(0x18ebeb)
                 description = "**Things you can do here before submitting**\n" +
                               "- Create a description\n" +
-                              "- TODO: Do some magic to make files work (sorry future Meiko)"
+                              "- TODO: Do some magic to make files work (sorry future Meiko)\n" +
+                              "- TODO: When selecting an author, give them permission to see the channel | Done\n" +
+                              "- TDOO: Update the selection menu for everyone after editing | Wont fix (probably)\n" +
+                              "- TODO: Unify the edit buttons into one form"
             }
             embed {
                 title = submissionTitle
@@ -80,12 +84,22 @@ class Register(
                     name = "Coordinates"
                     value = "Not provided!"
                 }
+                field {
+                    name = "Authors"
+                    value = interaction.user.mention
+                }
             }
 
             actionRow {
                 interactionButton(edit.style, edit.customId, edit.builder)
                 interactionButton(coords.style, coords.customId, coords.builder)
                 interactionButton(abort.style, abort.customId, abort.builder)
+            }
+            actionRow {
+                userSelect(authors.customId) {
+                    allowedValues = 1..20
+                    defaultUsers.addFirst(interaction.user.id)
+                }
             }
         }
 

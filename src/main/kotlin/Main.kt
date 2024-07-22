@@ -4,9 +4,7 @@ import commands.Register
 import dev.kord.common.entity.*
 import dev.kord.core.Kord
 import dev.kord.core.event.gateway.ReadyEvent
-import dev.kord.core.event.interaction.ButtonInteractionCreateEvent
-import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
-import dev.kord.core.event.interaction.ModalSubmitInteractionCreateEvent
+import dev.kord.core.event.interaction.*
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
@@ -49,17 +47,19 @@ suspend fun main() {
     val kord = Kord(config.token)
 
     val ctx = Context()
+    ctx.distributor.addCommand(Ping(kord, ctx))
+    ctx.distributor.addCommand(Register(kord, ctx))
+
     ctx.distributor.addButton(ButtonAbort(kord, ctx))
     ctx.distributor.addButton(ButtonEditDescription(kord, ctx))
     ctx.distributor.addButton(ButtonCoordinates(kord, ctx))
 
-    ctx.distributor.addCommand(Ping(kord, ctx))
-    ctx.distributor.addCommand(Register(kord, ctx))
-
     ctx.distributor.addModal(ModalEditDescription(kord, ctx))
     ctx.distributor.addModal(ModalCoordinates(kord, ctx))
 
-    // Delete global commands
+    ctx.distributor.addGuildUserMenu(UserSelectAuthor(kord, ctx))
+
+    // Delete global commandsSe
     if (config.unregisterCommands) {
         unregisterAll(kord)
         println("Deleted all commands")
@@ -97,6 +97,11 @@ suspend fun main() {
     kord.on<ModalSubmitInteractionCreateEvent> {
         println("Modal ${interaction.modalId} submitted")
         ctx.distributor.modals[interaction.modalId]?.onSubmit(interaction)
+    }
+
+    kord.on<GuildSelectMenuInteractionCreateEvent> {
+        println("Select Menu ${interaction.componentId}")
+        ctx.distributor.guildUserMenus[interaction.componentId]?.onSelect(interaction)
     }
 
     kord.login {

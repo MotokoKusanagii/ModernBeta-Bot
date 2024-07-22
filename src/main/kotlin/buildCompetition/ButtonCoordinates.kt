@@ -1,6 +1,6 @@
 package buildCompetition
 
-import Button
+import interfaces.Button
 import Context
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.Kord

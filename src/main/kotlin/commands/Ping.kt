@@ -1,6 +1,6 @@
 package commands
 
-import Command
+import interfaces.Command
 import Context
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondPublic

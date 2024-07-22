@@ -1,7 +1,7 @@
 package buildCompetition
 
 import Context
-import Modal
+import interfaces.Modal
 import dev.kord.common.entity.TextInputStyle
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.updatePublicMessage
@@ -53,6 +53,10 @@ class ModalCoordinates(
                 field {
                     name = interaction.message!!.embeds[1].fields[0].name
                     value = "X: **%,d** Y: **%,d** Z: **%,d**".format(Locale.GERMANY, x, y, z)
+                }
+                field {
+                    name = interaction.message!!.embeds[1].fields[1].name
+                    value = interaction.message!!.embeds[1].fields[1].value
                 }
             }
         }
