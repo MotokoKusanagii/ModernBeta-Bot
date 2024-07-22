@@ -16,7 +16,7 @@ class Ping(
 ) : Command {
     override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         interaction.respondPublic {
-            content = "Pong!"
+            content = "https://imgur.com/PMrQZ8V"
         }
     }
 }

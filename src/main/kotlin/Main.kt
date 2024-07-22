@@ -11,6 +11,7 @@ import dev.kord.gateway.PrivilegedIntent
 import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import java.io.File
 
 @Serializable
@@ -42,6 +43,9 @@ fun parseConfig(): ConfigJson {
 }
 
 suspend fun main() {
+    val logger = KotlinLogging.logger {}
+    logger.info { "Starting application..." }
+
 
     val config = parseConfig()
     val kord = Kord(config.token)

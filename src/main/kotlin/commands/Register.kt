@@ -3,12 +3,16 @@ package commands
 import interfaces.Command
 import Context
 import deleteDelay
+import dev.kord.common.annotation.KordPreview
 import dev.kord.common.entity.*
 import dev.kord.core.Kord
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.createTextChannel
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
+import dev.kord.core.event.message.MessageCreateEvent
+import dev.kord.core.live.channel.LiveChannel
+import dev.kord.core.live.channel.live
 import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.actionRow
@@ -26,6 +30,7 @@ class Register(
         }
     }
 ) : Command {
+    @OptIn(KordPreview::class)
     override suspend fun onCallGuild(interaction: GuildChatInputCommandInteraction) {
         val response = interaction.deferEphemeralResponse()
 
@@ -108,4 +113,5 @@ class Register(
         }
         confirmation.deleteDelay(3000)
     }
+
 }

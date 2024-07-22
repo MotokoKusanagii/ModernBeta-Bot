@@ -16,8 +16,19 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("dev.kord:kord-core:0.14.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
-    implementation("uk.co.nichesolutions:slf4j-api:1.7.22-CUSTOM")
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta2")
+    implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
+    implementation("org.slf4j:slf4j-simple:2.1.0-alpha1")
+    implementation ("io.github.oshai:kotlin-logging-jvm:5.1.4")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.test {
