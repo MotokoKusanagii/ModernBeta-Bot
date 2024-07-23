@@ -10,20 +10,19 @@ import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.createTextChannel
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
-import dev.kord.core.event.message.MessageCreateEvent
-import dev.kord.core.live.channel.LiveChannel
-import dev.kord.core.live.channel.live
-import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
+import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
+import interfaces.CommandType
 
 class Register(
     override val kord: Kord,
     override val ctx: Context,
     override val name: String = "register",
     override val description: String = "Register a build for the competition!",
-    override val builder: GlobalChatInputCreateBuilder.() -> Unit = {
+    override val type: CommandType = CommandType.GUILD,
+    override val builder: ChatInputCreateBuilder.() -> Unit = {
         string("title", "The title of your submission!") {
             required = true
             maxLength = 50

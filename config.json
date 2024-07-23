@@ -1,7 +1,8 @@
 {
   "token": "secret",
+  "applicationId": "1263121686673232014",
   "registerCommands": false,
+  "returnAfterRegister": true,
   "unregisterCommands": false,
-  "returnAfterRegister": false,
-  "returnAfterUnregister": false
+  "returnAfterUnregister": true
 }

@@ -1,14 +1,14 @@
-import interfaces.Button
-import interfaces.Command
-import interfaces.Modal
-import interfaces.GuildUserSelect
+import dev.kord.common.entity.Snowflake
+import dev.kord.core.Kord
+import interfaces.*
+import kotlinx.coroutines.flow.onEach
 
 class InteractionDistributor() {
     var buttons: MutableMap<String, Button> = mutableMapOf()
         get() = field
 
     fun addButton(button: Button) {
-        println("Register button ${button.customId}")
+        println("Adding button ${button.customId}")
         buttons[button.customId] = button
     }
 
@@ -21,7 +21,7 @@ class InteractionDistributor() {
         get() = field
 
     fun addCommand(command: Command) {
-        println("Register command ${command.name}")
+        println("Adding command ${command.name}")
         cmd[command.name] = command
     }
 
@@ -54,6 +54,41 @@ class InteractionDistributor() {
 
 }
 
-class Context() {
+class Context(val kord: Kord, val applicationId: Snowflake) {
+    val testGuildId = Snowflake(1263077356818661387)
     var distributor = InteractionDistributor()
+
+    suspend fun registerCommands() {
+        kord.createGlobalApplicationCommands {
+            distributor.cmd.forEach { (key, value) ->
+                if (value.type == CommandType.GLOBAL) {
+                    println("Registering global command $key")
+                    input(value.name, value.description, value.builder)
+                }
+            }
+        }
+
+        kord.createGuildApplicationCommands (testGuildId) {
+            distributor.cmd.forEach { (key, value) ->
+                if (value.type == CommandType.GUILD) {
+                    println("Registering guild command $key")
+                    input(value.name, value.description, value.builder)
+                }
+            }
+        }
+    }
+    fun deleteGlobalCommands() {
+        val commands = kord.getGlobalApplicationCommands()
+        commands.onEach { command ->
+            println("Deleting global command ${command.name}")
+            command.delete()
+        }
+    }
+    fun deleteGuildCommands() {
+        val commands = kord.getGuildApplicationCommands(testGuildId)
+        commands.onEach { command ->
+            println("Deleting guild command ${command.name}")
+            command.delete()
+        }
+    }
 }

@@ -1,4 +1,5 @@
 import buildCompetition.*
+import commands.FileCMD
 import commands.Ping
 import commands.Register
 import dev.kord.common.entity.*
@@ -8,7 +9,6 @@ import dev.kord.core.event.interaction.*
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
-import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
@@ -17,19 +17,12 @@ import java.io.File
 @Serializable
 data class ConfigJson(
     var token: String,
+    val applicationId: String,
     val registerCommands: Boolean,
     val unregisterCommands: Boolean,
     val returnAfterRegister: Boolean,
     val returnAfterUnregister: Boolean,
 )
-
-suspend fun unregisterAll(kord: Kord) {
-    val commands = kord.getGlobalApplicationCommands()
-    commands.onEach { command ->
-        println("Deleting command: ${command.name} (hopefully)")
-        command.delete()
-    }
-}
 
 fun parseConfig(): ConfigJson {
     val cwd = System.getProperty("user.dir")
@@ -50,7 +43,8 @@ suspend fun main() {
     val config = parseConfig()
     val kord = Kord(config.token)
 
-    val ctx = Context()
+    val ctx = Context(kord, Snowflake(config.applicationId))
+    ctx.distributor.addCommand(FileCMD(kord, ctx))
     ctx.distributor.addCommand(Ping(kord, ctx))
     ctx.distributor.addCommand(Register(kord, ctx))
 
@@ -65,8 +59,8 @@ suspend fun main() {
 
     // Delete global commandsSe
     if (config.unregisterCommands) {
-        unregisterAll(kord)
-        println("Deleted all commands")
+        ctx.deleteGuildCommands()
+        ctx.deleteGlobalCommands()
         if (config.returnAfterUnregister) {
             return
         }
@@ -74,13 +68,15 @@ suspend fun main() {
 
     // Register commands
     if (config.registerCommands) {
-        for (command in ctx.distributor.cmd) {
-            command.value.register()
-            println("Registered command: ${command.key}")
-        }
+        ctx.registerCommands()
         if (config.returnAfterRegister) {
             return
         }
+    }
+
+    val commands = kord.getGlobalApplicationCommands()
+    commands.collect { command ->
+        println("Command: ${command.name}")
     }
 
     kord.on<ReadyEvent> {
