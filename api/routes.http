@@ -1,5 +1,119 @@
 
 ### API base route
-GET localhost:3000
+GET localhost:3000/v1/
+
+### Create competition
+POST localhost:3000/v1/competition
+
+# Returns the ID
+{
+    "title": "test"
+    "start": 111100,
+    "end": 0203,
+    "vote_start": 239329,
+    "vote_end": 234,
+    "max_votes": 10,
+    "done": false,
+    "deleted": false,
+}
+
+### Return a list of competitions
+GET localhost:3000/v1/competition?limit=5&page=0&include_done=false
+# Parameters (all optional)
+# limit = int <- max entries returned
+# page = int <- pagination
+# include_done = boolean <- If finished competitions are returned
+# include_delete = boolean <- If deleted competitions are returned
+# Returns a list of competition objects
+
+### Return a specific competition
+GET localhost:3000/v1/competition/[id: int]
+# Returns the competition object
+
+{
+    "title": "test"
+    "start": 111100,
+    "end": 0203,
+    "vote_start": 239329,
+    "vote_end": 234,
+    "max_votes": 10,
+    "done": false,
+    "deleted": false,
+}
+
+### Delete a specific competition
+DELETE localhost:3000/v1/competition/[id: int]
+# Delete a specific competition
+
+### Update specific competition
+PUT localhost:3000/v1/competition/[id: int]
+
+{
+    "title": "test"
+    "start": 111100,
+    "end": 0203,
+    "vote_start": 239329,
+    "vote_end": 234,
+    "max_votes": 10,
+    "done": false,
+    "deleted": false,
+}
+
+### Create entry
+POST localhost:3000/v1/competition/[id: int]/entry
+
+{
+   "title": "example",
+   "entry_channel_id": "2424234242",
+   "author_id": "12313"
+}
 
 ###
+GET localhost:3000/v1/competition/[id: int]/entry?limit=5&page=0&include_invalidate=false&include_delete=false
+# Parameters (all optional)
+# limit = int <- max entries returned
+# page = int <- pagination
+# include_invalidate = boolean <- If finished invalidated are returned
+# include_delete = boolean <- If deleted competitions are returned
+# Returns a list of competition objects
+
+### Return a specific entry
+GET localhost:3000/v1/competition/[id: int]/entry/[id: int]
+# Returns the entry object
+
+### Delete a specific entry
+DELETE localhost:3000/v1/competition/[id: int]/entry/[id: int]?invalidate=false
+# Delete a specific entry
+# Parameters (all optional)
+# invalidate = boolean <- Invalidate entry instead of deleting
+
+### Update specific entry
+PUT localhost:3000/v1/competition/[id: int]/entry/[id: int]/
+
+{
+    competition_id: int,
+    title: "test",
+    entry_channel_id: "234242342",
+    submitted: boolean,
+    forum_post_id: "234243"
+}
+
+### Add Author
+POST localhost:3000/v1/competition/[id: int]/entry/[id: int]/author
+
+id: "23423432"
+
+### Remove author
+DELETE localhost:3000/v1/competition/[id: int]/entry/[id: int]/author/[id: string]
+
+### Create Vote
+POST localhost:3000/v1/competition/[id: int]/entry/[id: int]/vote
+
+id: "2423445"
+
+### Delete vote
+DELETE localhost:3000/v1/competition/[id: int]/entry/[id: int]/vote/[user_id: string]
+
+
+
+
