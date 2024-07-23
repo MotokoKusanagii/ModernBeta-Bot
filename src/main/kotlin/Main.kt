@@ -57,7 +57,7 @@ suspend fun main() {
 
     ctx.distributor.addGuildUserMenu(UserSelectAuthor(kord, ctx))
 
-    // Delete global commandsSe
+    // Delete global commands
     if (config.unregisterCommands) {
         ctx.deleteGuildCommands()
         ctx.deleteGlobalCommands()

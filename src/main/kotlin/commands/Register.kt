@@ -34,9 +34,11 @@ class Register(
         val response = interaction.deferEphemeralResponse()
 
         val parent = 1263077357619777638 // This has to be later retrieved from the settings table
+
         val guild = interaction.guild.asGuild()
         val everyone = guild.getEveryoneRole()
         val submissionTitle = interaction.command.strings["title"]!!
+
 
         val channel = guild.createTextChannel("${submissionTitle}-submission") {
             parentId = Snowflake(parent)
